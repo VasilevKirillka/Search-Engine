@@ -1,0 +1,39 @@
+# example values
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    password: Snamas452039KirillVas89
+    url: jdbc:mysql://localhost:3306/search_eng
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    open-in-view: true
+  task:
+    scheduling:
+      enabled: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+indexing-settings:
+  sites:
+    - url: https://www.lenta.ru
+      name: Лента.ру
+#    - url: https://www.skillbox.ru
+#      name: Skillbox
+    - url: https://www.playback.ru
+      name: PlayBack.Ru
+#    - url:  https://ipfran.ru
+#      name: ИПФРАН
+#    - url:  https://dimonvideo.ru/
+#      name: ДимонВидео.ру
+jsoup-connection:
+  user-agent: Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rv1.8.1.6) Gecko/20070725 Firefox/2.0.0.6
+  referrer: http://www.google.com
