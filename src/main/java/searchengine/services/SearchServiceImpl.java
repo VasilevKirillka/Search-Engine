@@ -22,6 +22,7 @@ import searchengine.util.PathFromUrl;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -193,17 +194,20 @@ public class SearchServiceImpl implements SearchService {
         }
         Collections.sort(lemmaIndex);
         List<String> wordsList = extractWordsByLemmaIndex(content, lemmaIndex);
-//        for (int i = 0; i < wordsList.size(); i++) {
-//            result.append(wordsList.get(i)).append("... ");
-//            if (i > 3) {
+//
+//        for (String word : wordsList) {
+//            result.append(word).append("... ");
+//            if (result.length() > MAX_SNIPPET_LENGTH) {
 //                break;
 //            }
 //        }
+        int count=0;
         for (String word : wordsList) {
-            result.append(word).append("... ");
-            if (result.length() > MAX_SNIPPET_LENGTH) {
+            if (count > MAX_SNIPPET_LENGTH) {
                 break;
             }
+            result.append(word).append("... ");
+            count++;
         }
         return result.toString();
     }
@@ -226,21 +230,41 @@ public class SearchServiceImpl implements SearchService {
         return result;
     }
 
+//    private String getWordsFromIndexWithHighlighting(int start, int end, String content) {
+//        String word = content.substring(start, end);
+//        int prevPoint;
+//        int lastPoint;
+//        if (content.lastIndexOf(" ", start) != -1) {
+//            prevPoint = content.lastIndexOf(" ", start);
+//        } else {
+//            prevPoint = start;
+//        }
+//        if (content.indexOf(" ", end + 30) != -1) {
+//            lastPoint = content.indexOf(" ", end + 30);
+//        } else {
+//            lastPoint = content.indexOf(" ", end);
+//        }
+//        String text = content.substring(prevPoint, lastPoint).replaceAll(word, "<b>" + word + "</b>");
+//        return text;
+//    }
+
     private String getWordsFromIndexWithHighlighting(int start, int end, String content) {
         String word = content.substring(start, end);
         int prevPoint;
         int lastPoint;
         if (content.lastIndexOf(" ", start) != -1) {
             prevPoint = content.lastIndexOf(" ", start);
-        } else prevPoint = start;
+        } else {
+            prevPoint = start;
+        }
         if (content.indexOf(" ", end + 30) != -1) {
             lastPoint = content.indexOf(" ", end + 30);
         } else {
             lastPoint = content.indexOf(" ", end);
         }
-        String text = content.substring(prevPoint, lastPoint).replaceAll(word, "<b>" + word + "</b>");
+        String escapedWord = Pattern.quote(word);
+        String text = content.substring(prevPoint, lastPoint).replaceAll(escapedWord, "<b>$0</b>");
         return text;
     }
-
 
 }

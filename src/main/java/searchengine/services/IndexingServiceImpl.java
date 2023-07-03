@@ -78,16 +78,17 @@ public class IndexingServiceImpl implements IndexingService {
 
 //    @Override
 //    public boolean indexingPage(String urlPage) {
-//        if (isPageAvailable(urlPage)) {
-//            executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-//            executorService.submit(new IndexingAllPages(siteRepository, pageRepository,
-//                    lemmaRepository, indexRepository, getLemmasData, getIndexesData, site, pathFromUrl, connection));
-//            executorService.shutdown();
-//            return true;
-//        } else {
-//            return false;
-//        }
-//
+//            if (isPageAvailable(urlPage)) {
+//                for (Site site : sitesList.getSites()) {
+//                executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+//                executorService.submit(new IndexingOnePageExp(siteRepository, pageRepository,
+//                        lemmaRepository, indexRepository, getLemmasData, getIndexesData, site, urlPage, pathFromUrl, connection));
+//            }
+//                executorService.shutdown();
+//                return true;
+//            } else {
+//                return false;
+//            }
 //    }
 
 

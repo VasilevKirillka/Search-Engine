@@ -11,7 +11,8 @@ import java.util.List;
 @Repository
 public interface SiteRepository extends JpaRepository<DBSites, Integer> {
     DBSites findByUrl(String url);
-    DBSites findByUrlLike(String url);
+    //    DBSites findFirstDistinctByUrlLike(String url);  //DISTINCT  findByUrlContainingIgnoreCase
+    DBSites findByUrlContainingIgnoreCase(String url);
     List<DBSites> findByStatus(StatusIndex status);
     boolean existsByStatus(StatusIndex status);
 }

@@ -20,7 +20,7 @@ import java.util.Set;
 // индексация одной страницы
 @RequiredArgsConstructor
 @Component
-public class IndexingOnePage {
+public class IndexingOnePage{ // implements Runnable
 
 
     private final SiteRepository siteRepository;
@@ -32,12 +32,51 @@ public class IndexingOnePage {
     private final FindLemmas lemmaFinder;
     private final JsoupConnection connection; //
 
+//    public void start(String page) {
+//        String path =  page.endsWith("/") ? pathFromUrl.getPathToPage(page) : pathFromUrl.getPathToPage(page) + "/";
+//        String hostSite = pathFromUrl.getHostFromPage(page);
+//        DBSites siteEntity;
+//
+//        if (siteRepository.findFirstDistinctByUrlLike("%" + hostSite + "%") == null) {
+//            String name = getNameSite(page);
+//            String url = getUrlSite(page);
+//            siteEntity = new DBSites();
+//            siteEntity.setStatus(StatusIndex.INDEXING);
+//            siteEntity.setStatusTime(LocalDateTime.now());
+//            siteEntity.setUrl(url);
+//            siteEntity.setName(name);
+//            siteRepository.save(siteEntity);
+//        } else {
+//            siteEntity = siteRepository.findFirstDistinctByUrlLike("%" + hostSite + "%");
+//        }
+//
+//        if (pageRepository.findFirstByPath(path) != null) {
+//            DBPages pageEntity = pageRepository.findFirstByPath(path);
+//
+//            pageRepository.deleteById(pageEntity.getId());
+//        }
+//
+//        DBPages pageEntity;
+//
+//        Document document = connection.getConnection(page);
+//        if (document == null) {
+//            pageEntity= createPages(siteEntity, path, 504, "Gateway timeout" );
+//        } else {
+//            Connection.Response response = document.connection().response();
+//            int code = response.statusCode();
+//            String htmlContent = document.outerHtml();
+//            pageEntity=createPages(siteEntity, path, code, htmlContent);
+//        }
+//        pageRepository.save(pageEntity);
+//        addLemmas(pageEntity, siteEntity);
+//
+//    }
     public void start(String page) {
         String path =  page.endsWith("/") ? pathFromUrl.getPathToPage(page) : pathFromUrl.getPathToPage(page) + "/";
         String hostSite = pathFromUrl.getHostFromPage(page);
-        DBSites siteEntity;
+        DBSites siteEntity = siteRepository.findByUrlContainingIgnoreCase(hostSite);
 
-        if (siteRepository.findByUrlLike("%" + hostSite + "%") == null) {
+        if (siteEntity == null) {
             String name = getNameSite(page);
             String url = getUrlSite(page);
             siteEntity = new DBSites();
@@ -46,30 +85,24 @@ public class IndexingOnePage {
             siteEntity.setUrl(url);
             siteEntity.setName(name);
             siteRepository.save(siteEntity);
-        } else {
-            siteEntity = siteRepository.findByUrlLike("%" + hostSite + "%");
         }
 
-        if (pageRepository.findByPath(path) != null) {
-            DBPages pageEntity = pageRepository.findByPath(path);
-
+        DBPages pageEntity = pageRepository.findByPath(path);
+        if (pageEntity != null) {
             pageRepository.deleteById(pageEntity.getId());
         }
 
-        DBPages pageEntity;
-
         Document document = connection.getConnection(page);
         if (document == null) {
-            pageEntity= createPages(siteEntity, path, 504, "Gateway timeout" );
+            pageEntity = createPages(siteEntity, path, 504, "Gateway timeout");
         } else {
             Connection.Response response = document.connection().response();
             int code = response.statusCode();
             String htmlContent = document.outerHtml();
-            pageEntity=createPages(siteEntity, path, code, htmlContent);
+            pageEntity = createPages(siteEntity, path, code, htmlContent);
         }
         pageRepository.save(pageEntity);
         addLemmas(pageEntity, siteEntity);
-
     }
 
 
@@ -143,5 +176,4 @@ public class IndexingOnePage {
         }
         return "";
     }
-
 }

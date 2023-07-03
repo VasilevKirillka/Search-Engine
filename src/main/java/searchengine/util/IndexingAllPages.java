@@ -36,6 +36,7 @@ public class IndexingAllPages implements Runnable {
 
     @Override
     public void run() {
+        long start=System.currentTimeMillis();
         String siteName = site.getName();
         if (siteRepository.findByUrl(site.getUrl()) != null) {
             deleteData(site);
@@ -49,6 +50,7 @@ public class IndexingAllPages implements Runnable {
             addLemmasToTheRepository();
             System.out.println("Добавлены леммы сайта: " + siteName);
             addIndexToTheRepository();
+ //           System.out.println("Время индексации составило " + (System.currentTimeMillis()-start) + " ms");
         } catch (InterruptedException e) {
             List<DBSites> sites = siteRepository.findByStatus(StatusIndex.INDEXING);
             for (DBSites siteEntity : sites) {
@@ -58,6 +60,7 @@ public class IndexingAllPages implements Runnable {
                 siteRepository.saveAndFlush(siteEntity);
             }
         }
+        System.out.println("Время индексации составило " + (System.currentTimeMillis()-start) + " ms");
     }
 
     private void addSiteToTheRepository() throws InterruptedException {
@@ -162,4 +165,10 @@ public class IndexingAllPages implements Runnable {
     }
 
 }
+
+
+
+
+
+
 

@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 @Component
 public class FindLemmas {
     private static RussianLuceneMorphology russianLuceneMorphology;
+    private static final Pattern HTML_TAG = Pattern.compile("<[^>]*>");
 
     static {
         try {
@@ -60,7 +61,7 @@ public class FindLemmas {
             for (String lem : lemmas) {
                 if (lem.equals(lemma)) {
                     lemmaIndexList.add(index);
-                    //                    break;  // ?
+                    break;  // ?
                 }
             }
             index += element.length() + 1;
@@ -95,11 +96,22 @@ public class FindLemmas {
         return false;
     }
 
-    public String removeHtmlTags(String html) { // очищение от тегов
-        Pattern pattern = Pattern.compile("<[^>]*>");
-        Matcher matcher = pattern.matcher(html);
-        String plainText = matcher.replaceAll("");
-        return plainText;
-    }
+//    public String removeHtmlTags(String html) { // очищение от тегов
+//        Pattern pattern = Pattern.compile("<[^>]*>");
+//        Matcher matcher = pattern.matcher(html);
+//        String plainText = matcher.replaceAll("");
+//        return plainText;
+//    }
 
+    public String removeHtmlTags(String html) { // очищение от тегов
+        Matcher matcher = HTML_TAG.matcher(html);
+        StringBuilder plainText = new StringBuilder();
+        int last =0;
+        while (matcher.find()){
+            plainText.append(html, last, matcher.start());
+            last= matcher.end();
+        }
+        plainText.append(html.substring(last));
+        return plainText.toString();
+    }
 }

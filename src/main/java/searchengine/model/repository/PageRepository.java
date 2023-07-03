@@ -18,13 +18,11 @@ public interface PageRepository extends JpaRepository<DBPages, Integer> {
 
     List<DBPages> findBySiteId(DBSites siteEntity);
 
+ //   DBPages findFirstByPath(String path);  // First  findByPath
     DBPages findByPath(String path);
-
     int countBySiteId(DBSites siteId);
 
-    @Query(value = "SELECT p.* FROM page p JOIN search_index i ON p.id = i.page_id WHERE i.lemma_id IN :lemmas",
+    @Query(value = "SELECT p.* FROM page p JOIN search_index i ON p.id = i.page_id WHERE i.lemma_id IN :lemmas",  // DISTINCT
             nativeQuery = true)
     List<DBPages> findByLemmas(@Param("lemmas") Collection<DBLemmas> lemmas);
-
-
 }
