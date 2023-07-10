@@ -20,7 +20,7 @@ public class GetPagesData extends RecursiveTask<CopyOnWriteArrayList<PagesData>>
     private final CopyOnWriteArrayList<PagesData> pagesData;
     private final PathFromUrl pathFromUrl;
     private final String siteUrl;
-    private final JsoupConnection connection; //
+    private final JsoupConnection connection;
 
     @Override
     public CopyOnWriteArrayList<PagesData> compute() {

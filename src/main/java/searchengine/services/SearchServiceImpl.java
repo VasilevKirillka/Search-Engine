@@ -194,13 +194,6 @@ public class SearchServiceImpl implements SearchService {
         }
         Collections.sort(lemmaIndex);
         List<String> wordsList = extractWordsByLemmaIndex(content, lemmaIndex);
-//
-//        for (String word : wordsList) {
-//            result.append(word).append("... ");
-//            if (result.length() > MAX_SNIPPET_LENGTH) {
-//                break;
-//            }
-//        }
         int count=0;
         for (String word : wordsList) {
             if (count > MAX_SNIPPET_LENGTH) {
@@ -230,23 +223,6 @@ public class SearchServiceImpl implements SearchService {
         return result;
     }
 
-//    private String getWordsFromIndexWithHighlighting(int start, int end, String content) {
-//        String word = content.substring(start, end);
-//        int prevPoint;
-//        int lastPoint;
-//        if (content.lastIndexOf(" ", start) != -1) {
-//            prevPoint = content.lastIndexOf(" ", start);
-//        } else {
-//            prevPoint = start;
-//        }
-//        if (content.indexOf(" ", end + 30) != -1) {
-//            lastPoint = content.indexOf(" ", end + 30);
-//        } else {
-//            lastPoint = content.indexOf(" ", end);
-//        }
-//        String text = content.substring(prevPoint, lastPoint).replaceAll(word, "<b>" + word + "</b>");
-//        return text;
-//    }
 
     private String getWordsFromIndexWithHighlighting(int start, int end, String content) {
         String word = content.substring(start, end);

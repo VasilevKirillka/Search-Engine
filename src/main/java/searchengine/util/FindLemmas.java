@@ -1,6 +1,5 @@
 package searchengine.util;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
 import org.springframework.stereotype.Component;
 

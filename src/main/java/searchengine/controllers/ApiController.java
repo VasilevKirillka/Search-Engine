@@ -54,7 +54,7 @@ public class ApiController {
     @PostMapping("/indexPage")
     public ResponseEntity indexPage (@RequestParam(name = "url") String url) {
         if (url.isEmpty()) {
-            return new ResponseEntity(new BadRequest(false, ErrorsCode.NOT_AVAILABLE_PAGE),
+            return new ResponseEntity(new BadRequest(false, ErrorsCode.EMPTY_PAGE),
                     HttpStatus.BAD_REQUEST);
         } else {
             if (indexingService.indexingPage(url)) {
