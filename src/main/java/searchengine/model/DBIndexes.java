@@ -1,6 +1,7 @@
 package searchengine.model;
 
 import lombok.*;
+
 import javax.persistence.*;
 
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "search_index")
-public class DBIndexes{
+public class DBIndexes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

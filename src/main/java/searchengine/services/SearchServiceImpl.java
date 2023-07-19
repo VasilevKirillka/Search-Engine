@@ -194,7 +194,7 @@ public class SearchServiceImpl implements SearchService {
         }
         Collections.sort(lemmaIndex);
         List<String> wordsList = extractWordsByLemmaIndex(content, lemmaIndex);
-        int count=0;
+        int count = 0;
         for (String word : wordsList) {
             if (count > MAX_SNIPPET_LENGTH) {
                 break;

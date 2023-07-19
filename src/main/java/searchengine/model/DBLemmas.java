@@ -27,5 +27,5 @@ public class DBLemmas {
     private int frequency;
 
     @OneToMany(mappedBy = "lemmaId", cascade = CascadeType.ALL)
-    List<DBIndexes> indexSearch=new ArrayList<>();
+    List<DBIndexes> indexSearch = new ArrayList<>();
 }

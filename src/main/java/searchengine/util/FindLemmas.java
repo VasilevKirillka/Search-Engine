@@ -95,20 +95,13 @@ public class FindLemmas {
         return false;
     }
 
-//    public String removeHtmlTags(String html) { // очищение от тегов
-//        Pattern pattern = Pattern.compile("<[^>]*>");
-//        Matcher matcher = pattern.matcher(html);
-//        String plainText = matcher.replaceAll("");
-//        return plainText;
-//    }
-
     public String removeHtmlTags(String html) { // очищение от тегов
         Matcher matcher = HTML_TAG.matcher(html);
         StringBuilder plainText = new StringBuilder();
-        int last =0;
-        while (matcher.find()){
+        int last = 0;
+        while (matcher.find()) {
             plainText.append(html, last, matcher.start());
-            last= matcher.end();
+            last = matcher.end();
         }
         plainText.append(html.substring(last));
         return plainText.toString();

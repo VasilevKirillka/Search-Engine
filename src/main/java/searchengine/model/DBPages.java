@@ -30,5 +30,5 @@ public class DBPages {
     private String content;
 
     @OneToMany(mappedBy = "pageId", cascade = CascadeType.ALL)
-    List<DBIndexes> index=new ArrayList<>();
+    List<DBIndexes> index = new ArrayList<>();
 }

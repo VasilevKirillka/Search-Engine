@@ -16,7 +16,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-// индексация одной страницы
+
+
 @RequiredArgsConstructor
 public class IndexingOnePage implements Runnable {
 
@@ -34,7 +35,7 @@ public class IndexingOnePage implements Runnable {
     @Override
     public void run() {
         String hostSite = pathFromUrl.getHostFromPage(url);
-        String path =  url.endsWith("/") ? hostSite : hostSite + "/";
+        String path = url.endsWith("/") ? hostSite : hostSite + "/";
         DBSites siteEntity = siteRepository.findByUrlContainingIgnoreCase(hostSite);
 
         if (siteEntity == null) {
@@ -64,43 +65,9 @@ public class IndexingOnePage implements Runnable {
         }
         pageRepository.save(pageEntity);
         addLemmas(pageEntity, siteEntity);
+        siteEntity.setStatus(StatusIndex.INDEXED);  //
+        siteRepository.save(siteEntity);  //
     }
-
-
-//    public void start(String page) {
-//        String hostSite = pathFromUrl.getHostFromPage(page);
-//        String path =  page.endsWith("/") ? hostSite : hostSite + "/";
-//        DBSites siteEntity = siteRepository.findByUrlContainingIgnoreCase(hostSite);
-//
-//        if (siteEntity == null) {
-//            String name = getNameSite(page);
-//            String url = getUrlSite(page);
-//            siteEntity = new DBSites();
-//            siteEntity.setStatus(StatusIndex.INDEXING);
-//            siteEntity.setStatusTime(LocalDateTime.now());
-//            siteEntity.setUrl(url);
-//            siteEntity.setName(name);
-//            siteRepository.save(siteEntity);
-//        }
-//
-//        DBPages pageEntity = pageRepository.findByPath(path);
-//        if (pageEntity != null) {
-//            pageRepository.deleteById(pageEntity.getId());
-//        }
-//
-//        Document document = connection.getConnection(page);
-//        if (document == null) {
-//            pageEntity = createPages(siteEntity, path, 504, "Gateway timeout");
-//        } else {
-//            Connection.Response response = document.connection().response();
-//            int code = response.statusCode();
-//            String htmlContent = document.outerHtml();
-//            pageEntity = createPages(siteEntity, path, code, htmlContent);
-//        }
-//        pageRepository.save(pageEntity);
-//        addLemmas(pageEntity, siteEntity);
-//    }
-
 
 
     private void addLemmas(DBPages pageEntity, DBSites siteEntity) {
@@ -115,27 +82,18 @@ public class IndexingOnePage implements Runnable {
             if (lemmaEntity != null) {
                 lemmaEntity.setFrequency(lemmaEntity.getFrequency() + 1);
                 lemmaRepository.save(lemmaEntity);
-
-                addIndex(pageEntity, lemmaEntity, rank);
-
-                siteEntity.setStatus(StatusIndex.INDEXED);
-                siteRepository.save(siteEntity);
             } else {
                 lemmaEntity = new DBLemmas();
                 lemmaEntity.setSiteId(siteEntity);
                 lemmaEntity.setLemma(lemma);
                 lemmaEntity.setFrequency(1);
                 lemmaRepository.save(lemmaEntity);
-
-                addIndex(pageEntity, lemmaEntity, rank);
-
-                siteEntity.setStatus(StatusIndex.INDEXED);
-                siteRepository.save(siteEntity);
             }
+            addIndex(pageEntity, lemmaEntity, rank);
         }
     }
 
-    private DBPages createPages(DBSites siteEntity, String path, int code, String content){
+    private DBPages createPages(DBSites siteEntity, String path, int code, String content) {
         DBPages pageEntity = new DBPages();
         pageEntity.setSiteId(siteEntity);
         pageEntity.setPath(path);

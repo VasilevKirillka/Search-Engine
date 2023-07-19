@@ -13,8 +13,6 @@ import searchengine.services.StatisticsService;
 import searchengine.util.ErrorsCode;
 
 
-
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -25,13 +23,12 @@ public class ApiController {
     private final SearchService searchService;
 
 
-
     @GetMapping("/statistics")
     public ResponseEntity<StatisticsResponse> statistics() {
         return ResponseEntity.ok(statisticsService.getStatistics());
     }
 
-        @GetMapping("/startIndexing")
+    @GetMapping("/startIndexing")
     public ResponseEntity startIndexing() {
         if (indexingService.startIndexing()) {
             return new ResponseEntity<>(new OkResponse(true), HttpStatus.OK);
@@ -52,7 +49,7 @@ public class ApiController {
     }
 
     @PostMapping("/indexPage")
-    public ResponseEntity indexPage (@RequestParam(name = "url") String url) {
+    public ResponseEntity indexPage(@RequestParam(name = "url") String url) {
         if (url.isEmpty()) {
             return new ResponseEntity(new BadRequest(false, ErrorsCode.EMPTY_PAGE),
                     HttpStatus.BAD_REQUEST);
@@ -68,13 +65,13 @@ public class ApiController {
 
     @GetMapping("/search")
     public ResponseEntity search(@RequestParam(name = "query", required = false, defaultValue = "")
-                                         String query,
-                                         @RequestParam(name = "site", required = false, defaultValue = "")
-                                         String site,
-                                         @RequestParam(name = "offset", required = false, defaultValue = "0")
-                                         int offset,
-                                         @RequestParam(name = "limit", required = false, defaultValue = "20")
-                                         int limit) {
+                                 String query,
+                                 @RequestParam(name = "site", required = false, defaultValue = "")
+                                 String site,
+                                 @RequestParam(name = "offset", required = false, defaultValue = "0")
+                                 int offset,
+                                 @RequestParam(name = "limit", required = false, defaultValue = "20")
+                                 int limit) {
 
         return searchService.search(query, site, offset, limit);
     }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-// получение пути страницы и текста заголовка
+
 @Component
 @RequiredArgsConstructor
 public class PathFromUrl {

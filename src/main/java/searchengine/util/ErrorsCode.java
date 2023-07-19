@@ -9,5 +9,4 @@ public interface ErrorsCode {
     String EMPTY_PAGE = "Задана пустая страница";
 
 
-
 }

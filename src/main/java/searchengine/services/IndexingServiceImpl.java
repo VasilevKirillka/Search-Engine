@@ -16,6 +16,7 @@ import searchengine.util.*;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -23,8 +24,6 @@ import java.util.concurrent.Executors;
 public class IndexingServiceImpl implements IndexingService {
     private static final int CORE_COUNT = Runtime.getRuntime().availableProcessors();
     private ExecutorService executorService;
-   // private final IndexingOnePage indexingOnePage;
-
     private final SiteRepository siteRepository;
     private final PageRepository pageRepository;
     private final LemmaRepository lemmaRepository;
@@ -39,8 +38,6 @@ public class IndexingServiceImpl implements IndexingService {
     @SneakyThrows
     @Override
     public boolean startIndexing() {
-        // старт индексирования, если статус INDEXING - false, иначе создается пул потоков, для каждого сайта
-        // запускается индексация всез страниц, после потоки закрываются
         if (isIndexing()) {
             return false;
         } else {
@@ -54,7 +51,6 @@ public class IndexingServiceImpl implements IndexingService {
         }
     }
 
-    // прерывание индексации
     @SneakyThrows
     @Override
     public boolean stopIndexing() {
@@ -66,30 +62,20 @@ public class IndexingServiceImpl implements IndexingService {
         }
     }
 
-    // индексация страницы, если страница доступна и url не отсутствует.
-//    @Override
-//    public boolean indexingPage(String url) {
-//        if (isPageAvailable(url) && !url.isEmpty()) {
-//            indexingOnePage.run();
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
 
     @Override
+    @SneakyThrows
     public boolean indexingPage(String urlPage) {
-            if (isPageAvailable(urlPage)) {
-                executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-                executorService.submit(new IndexingOnePage(siteRepository, pageRepository,
-                        lemmaRepository, indexRepository, sitesList, pathFromUrl, lemmaFinder, connection, urlPage));
-                executorService.shutdown();
-                return true;
-            } else {
-                return false;
-            }
+        if (isPageAvailable(urlPage)) {
+            executorService = Executors.newSingleThreadExecutor();
+            executorService.submit(new IndexingOnePage(siteRepository, pageRepository,
+                    lemmaRepository, indexRepository, sitesList, pathFromUrl, lemmaFinder, connection, urlPage));
+            executorService.awaitTermination(10, TimeUnit.MINUTES);
+            return true;
+        } else {
+            return false;
+        }
     }
-
 
     private boolean isIndexing() {
 

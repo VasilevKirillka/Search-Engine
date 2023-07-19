@@ -19,27 +19,27 @@ public class DBSites {
     private int id;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "ENUM ('INDEXING', 'INDEXED', 'FAILED')", nullable=false)
+    @Column(columnDefinition = "ENUM ('INDEXING', 'INDEXED', 'FAILED')", nullable = false)
     @Basic(optional = false)
     private StatusIndex status;
 
-    @Column(name = "status_time",nullable=false)
+    @Column(name = "status_time", nullable = false)
     private LocalDateTime statusTime;
 
     @Column(name = "last_error", columnDefinition = "TEXT")
     private String lastError;
 
-    @Column(nullable=false, columnDefinition = "VARCHAR(515)")
+    @Column(nullable = false, columnDefinition = "VARCHAR(515)")
     private String url;
 
-    @Column(columnDefinition = "VARCHAR(515)", nullable=false)
+    @Column(columnDefinition = "VARCHAR(515)", nullable = false)
     private String name;
 
 
     @OneToMany(mappedBy = "siteId", cascade = CascadeType.ALL)
-    private List<DBPages> pagesList= new ArrayList<>();
+    private List<DBPages> pagesList = new ArrayList<>();
 
     @OneToMany(mappedBy = "siteId", cascade = CascadeType.ALL)
-    List<DBLemmas> lemmasList=new ArrayList<>();
+    List<DBLemmas> lemmasList = new ArrayList<>();
 
 }

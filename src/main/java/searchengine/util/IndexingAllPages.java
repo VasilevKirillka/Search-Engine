@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ForkJoinPool;
 
-// полная индексация
 @RequiredArgsConstructor
 public class IndexingAllPages implements Runnable {
 
@@ -36,7 +35,7 @@ public class IndexingAllPages implements Runnable {
 
     @Override
     public void run() {
-        long start=System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         String siteName = site.getName();
         if (siteRepository.findByUrl(site.getUrl()) != null) {
             deleteData(site);
@@ -50,7 +49,6 @@ public class IndexingAllPages implements Runnable {
             addLemmasToTheRepository();
             System.out.println("Добавлены леммы сайта: " + siteName);
             addIndexToTheRepository();
- //           System.out.println("Время индексации составило " + (System.currentTimeMillis()-start) + " ms");
         } catch (InterruptedException e) {
             List<DBSites> sites = siteRepository.findByStatus(StatusIndex.INDEXING);
             for (DBSites siteEntity : sites) {
@@ -60,7 +58,7 @@ public class IndexingAllPages implements Runnable {
                 siteRepository.saveAndFlush(siteEntity);
             }
         }
-        System.out.println("Время индексации составило " + (System.currentTimeMillis()-start) + " ms");
+        System.out.println("Время индексации составило " + (System.currentTimeMillis() - start) + " ms");
     }
 
     private void addSiteToTheRepository() throws InterruptedException {
