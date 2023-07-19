@@ -23,22 +23,22 @@ SearchEngine обходит все страницы заданных сайто�
 Теперь веб-интерфейс доступен для работы:
 <h2 align="center" style="margin: 0; padding: 0;">
 
-![image](./readme_file/Localhost.PNG )</h2>
+![image](./readme_file/Localhost.png )</h2>
 
 Интерфейс главной страницы, на которой выводится информация о индексируемых сайтах:
 <h2 align="center" style="margin: 0; padding: 0;">
 
-![image](./readme_file/Dashboard.PNG )</h2>
+![image](./readme_file/Dashboard.png )</h2>
 
 Поиска на всех сайтах:
 <h2 align="center" style="margin: 0; padding: 0;">
 
-![image](./readme_file/Searchallsite.PNG )</h2>
+![image](./readme_file/Searchallsite.png )</h2>
 
 Поиск на определенном сайте:
 <h2 align="center" style="margin: 0; padding: 0;">
 
-![image](./readme_file/Searchonesite.PNG )</h2>
+![image](./readme_file/Searchonesite.png )</h2>
 
 
 
